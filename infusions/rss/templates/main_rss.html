@@ -1,0 +1,17 @@
+{%opentable%}
+<div class='spacer-sm'>{%breadcrumb%}</div>
+<div class="rss-index">
+
+{categories.{
+    <div id='{%rss_cat_id%}' class='m-t-10 rss-index-item'>
+        <div class='spacer-xs'>
+            <a href='{%rss_cat_link%}' title='{%rss_cat_name%}'>{%rss_cat_name%}</a>
+            <div>{%rss_cat_description%}</div>
+        </div>
+    </div>
+}}
+{no_item.{
+    <div class='well text-center m-t-15'>{%message%}</div>
+}}
+</div>
+{%closetable%}

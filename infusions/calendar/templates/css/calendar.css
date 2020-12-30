@@ -1,0 +1,188 @@
+/*
+PHP-Fusion 9 Core Template Forum CSS
+*/
+.calendar-title {
+    text-transform: uppercase !important;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.calendar-title .sub-title {
+    font-size: 70%;
+    opacity: 0.7;
+}
+
+.calendar-container {
+    padding: 0;
+}
+
+
+.calendar-row {
+    height: 100px;
+}
+
+
+.calendar-day {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.current-day {
+    font-weight: bold;
+    background-color: lightgrey;
+}
+
+.normal-day {
+    font-weight: normal;
+}
+
+.other-day {
+    font-style: italic;
+    color:lightgray !important;
+}
+
+.calendar-description {
+    font-size: 13px;
+    color: #444;
+    text-transform: none;
+}
+
+.calendar-year .calendar-row {
+    height: 40px !important;
+    text-align: center;
+}
+
+.calendar-year .calendar-day {
+    margin: 0;
+}
+
+.calendar-year table th {
+    text-align: center;
+}
+
+.sub-calendar, .calendar-subcalendar {
+    font-size: 11px;
+}
+
+.calendar-subcalendar {
+    font-weight: 600;
+}
+
+.nowrap > .fa {
+    margin-right: 5px !important;
+}
+
+.calendar-container {
+    margin-top: 20px;
+}
+
+.item-mark {
+    display: table;
+    margin: -2px auto;
+}
+
+.item-mark i {
+    display: table-cell;
+    font-size: 3px;
+    padding: 0 1px;
+}
+
+.item-list {
+    display: block;
+}
+
+ul.event-items {
+    list-style-type: none;
+}
+
+ul.event-items > li {
+    border-left: 2px solid lightgray;
+    padding-left: 5px;
+    margin-top: 10px;
+}
+
+ul.event-items > li .event-date{
+    font-size: 12px;
+    color: gray;
+}
+
+.calendar-link-day {
+    font-size: 16px;
+    color: inherit;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+
+.calendar-link-item {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.calendar-stats > span {
+    opacity: 0.6;
+    font-size: 11px;
+    color: #444;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.calendar-lastuser {
+    border-left: 4px solid #777;
+    font-size: 11px;
+    min-height: 50px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.calendar-pages > nav {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.calendar_profile_link {
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.calendar_profile_link > a {
+    color: #444;
+    font-weight: 600;
+}
+
+.calendar-pages > nav > .btn-group > a {
+    background: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding: 0 5px;
+    font-size: 11px;
+}
+
+.calendar-icon {
+    color: #aaa;
+}
+
+.filter {
+    border: 1px solid #DDD;
+    padding: 8px 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.calendar-filter {
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+    vertical-align: middle;
+}
+
+.calendar-filter li {
+    margin: 5px -5px;
+}
+
+.tag_info {
+    display: inline-block;
+    margin-right: 10px;
+}

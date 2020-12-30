@@ -1,0 +1,16 @@
+{%opentable%}
+<div class='spacer-sm'>{%breadcrumb%}</div>
+<div class="clearfix ">{%filter%}</div>
+<div class="container-fluid calendar-index">
+
+{archive.{
+    <div class='m-t-10'>{%events%}</div>
+}}
+
+{no_item.{
+    <div class='well text-center m-t-15'>{%message%}</div>
+}}
+
+</div>
+{%closetable%}
+<div class="text-center m-t-10 m-b-10">{%pagenav%}</div>

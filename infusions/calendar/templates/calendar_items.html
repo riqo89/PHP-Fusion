@@ -1,0 +1,89 @@
+{%opentable%}
+<div class="calendar-item">
+<div class='spacer-sm'>{%breadcrumb%}</div>
+<h2 class='spacer-sm'>{%calendar_get_name%}</h2>
+<div class="clearfix ">{%filter%}</div>
+<div class="panel-group" id="calendar-accordion" role="tablist" aria-multiselectable="true">
+{calendar.{
+    <div class="panel panel-default">
+        <div class="panel-heading pointer" role="tab" id="calendar-item-{%event_id%}"  data-toggle="collapse" data-parent="#calendar-accordion" href="#collapse-calendar-item-{%event_id%}" aria-expanded="true" aria-controls="collapse-calendar-item-{%event_id%}" >
+            <div class="row">
+                <div class="col-md-9">
+                    <h4 class="panel-title">
+                        {%event_title%}
+                    </h4>
+                </div>                
+                <div class="col-md-3 text-muted text-right font-weight-light">
+                    {%event_start_title%}
+                </div>
+            </div>          
+        </div>
+        <div id="collapse-calendar-item-{%event_id%}" class="panel-collapse collapse {%event_collapse%}" role="tabpanel" aria-labelledby="calendar-item-{%event_id%}">
+            <div class="panel-body p-l-0 p-r-0">  
+                <div class="col-md-6 m-b-10">             
+                    <div class="col-md-1">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="col-md-11">
+                        {%event_date%}
+                    </div>
+                </div>
+                <div class="col-md-6 m-b-10">
+                    <div class="col-md-1">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="col-md-11">
+                        {%event_organizer%}
+                        <div class='pull-right'>{%event_participation%}</div>                        
+                    </div>  
+                </div>
+                <div class="col-md-6 m-b-10 {%show_description%}">
+                    <div class="col-md-1">
+                        <i class="fas fa-align-left"></i>
+                    </div>
+                    <div class="col-md-11">
+                        {%event_description%}
+                    </div>
+                </div>
+                <div class="col-md-6 m-b-10 {%show_location%}">
+                    <div class="col-md-1">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="col-md-11">
+                        <div class="m-b-10">{%event_location%}</div>
+                        <div>{%event_location_map%}</div>
+                    </div>
+                </div>
+                <div class="col-md-6 m-b-10 {%show_attachment%}">
+                    <div class="col-md-1">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <div class="col-md-11">
+                        {%event_attachment%}
+                    </div>
+                </div> 
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-9 text-muted">
+                        {%event_cat%}
+                        {%event_datestamp%}
+                    </div>                
+                    <div class="col-md-3 text-right ">
+                        {%ical_link%}
+                        {%edit_link%}
+                        {%delete_link%}
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+}}
+</div>
+{no_item.{
+    <div class='well text-center m-t-15'>{%message%}</div>
+}}
+</div>
+{%closetable%}
+<div class="text-center m-t-10 m-b-10">{%pagenav%}</div>
