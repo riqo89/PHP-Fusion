@@ -15,7 +15,7 @@ To install, upload the appropriate folder and install it in the settings as usua
 
 ### Infusions
 - [Calendar](infusions/calendar)
-    -[Next Events Panel](infusions/calendar_panel)
+    - [Next Events Panel](infusions/calendar_panel)
   
  - [RSS-Parser](infusions/rss)
     - [Last Feeds Panel](infusions/rss_panel)
