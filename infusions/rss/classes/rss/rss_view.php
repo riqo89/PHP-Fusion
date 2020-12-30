@@ -5,7 +5,7 @@
 | https://www.phpfusion.com/
 +--------------------------------------------------------+
 | Filename: rss/classes/rss/rss_view.php
-| Author: Core Development Team (coredevs@phpfusion.com)
+| Author: riqo (dev@corico.cloud)
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or

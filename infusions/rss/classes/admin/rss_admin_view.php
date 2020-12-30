@@ -4,8 +4,8 @@
 | Copyright (C) PHP-Fusion Inc
 | https://www.phpfusion.com/
 +--------------------------------------------------------+
-| Filename: rss/classes/admin/rss_admin_view.inc
-| Author: Core Development Team (coredevs@phpfusion.com)
+| Filename: rss/classes/admin/rss_admin_view.php
+| Author: riqo (dev@corico.cloud)
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or

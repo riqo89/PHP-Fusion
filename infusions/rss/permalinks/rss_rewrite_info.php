@@ -6,7 +6,7 @@
 +--------------------------------------------------------+
 | File Category: Core Rewrite Modules
 | Filename: rss_rewrite_info.php
-| Author: Chan (Frederick MC Chan)
+| Author: riqo (dev@corico.cloud)
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or

@@ -6,7 +6,7 @@
 +--------------------------------------------------------+
 | File Category: Core Rewrite Modules
 | Filename: rss_rewrite_include.php
-| Author: Chan (Frederick MC Chan)
+| Author: riqo (dev@corico.cloud)
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or
@@ -33,9 +33,9 @@ $pattern = [
     "rss/category/%rss_cat_id%"                        => "infusions/rss/rss.php?cat_id=%rss_cat_id%"
 ];
 
-$pattern_tables["%cat_id%"] = [
-    "table"       => DB_RSS,
-    "primary_key" => "rss_id",
-    "id"          => ["%rss_id%" => "cat_id"],
+$pattern_tables["%rss_cat_id%"] = [
+    "table"       => DB_RSS_CATS,
+    "primary_key" => "rss_cat_id",
+    "id"          => ["%rss_cat_id%" => "rss_cat_id"],
     "columns"     => []
 ];

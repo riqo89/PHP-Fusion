@@ -4,9 +4,8 @@
 | Copyright (C) PHP-Fusion Inc
 | https://www.phpfusion.com/
 +--------------------------------------------------------+
-| Filename: rss_viewer_panel.php
-| Author: RobiNN
-| Version: 1.0.0
+| Filename: rss_panel.php
+| Author: riqo (dev@corico.cloud)
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or
