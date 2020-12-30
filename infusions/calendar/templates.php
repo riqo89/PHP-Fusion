@@ -294,8 +294,8 @@ if (!function_exists('main_calendar_year')) {
 
         if ($options['show_title']) {
             $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("year=".date("Y", $year_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_year", $year_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("year=".date("Y", $year_after), ['cat_id'])."'>".Functions::showcdate("titledate_year", $year_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
+            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("year=".showdate("%Y", $year_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_year", $year_before)."</a></div>";
+            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("year=".showdate("%Y", $year_after), ['cat_id'])."'>".Functions::showcdate("titledate_year", $year_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
             $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_year", $date)."</h3>";
             $output .= "</div>\n";
         }
@@ -311,7 +311,7 @@ if (!function_exists('main_calendar_year')) {
         for ($m = 1; $m <= 12; $m++) {
             $mdate = mktime(0, 0, 0, $m, 1, date('Y', $date));
             $output .= in_array($m, [1, 5, 9]) ? "<div class='row'><div class='col-md-3'>" : "<div class='col-md-3'>";
-            $output .= "<h4 class='display-inline-block'><a href='".clean_request("month=".date("Y-m", $mdate), ['cat_id'])."'>".$months[$m]."</a></h4>";
+            $output .= "<h4 class='display-inline-block'><a href='".clean_request("month=".showdate("%Y-%m", $mdate), ['cat_id'])."'>".$months[$m]."</a></h4>";
             $output .= main_calendar_month(date('Y-m', $mdate), $events , [
                         'show_title'        => FALSE,
                         'show_filters'      => FALSE,
@@ -384,8 +384,8 @@ if (!function_exists('main_calendar_month')) {
         $output = '';
         if ($options['show_title']) {
             $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("month=".date("Y-m", $month_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_month", $month_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("month=".date("Y-m", $month_after), ['cat_id'])."'>".Functions::showcdate("titledate_month", $month_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
+            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("month=".showdate("%Y-%m", $month_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_month", $month_before)."</a></div>";
+            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("month=".showdate("%Y-%m", $month_after), ['cat_id'])."'>".Functions::showcdate("titledate_month", $month_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
             $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_month", $date)."</h3>";
             $output .= "</div>\n";
         }
@@ -405,23 +405,23 @@ if (!function_exists('main_calendar_month')) {
             $current_day = $i - $days_before;        
             $current_day_ts = strtotime($current_day." day", $date_first);
 
-            if (date("Y-m-d", TIME) == date("Y-m-d", $current_day_ts)) $class = "current-day";
+            if (showdate("%Y-%m-%d", TIME) == showdate("%Y-%m-%d", $current_day_ts)) $class = "current-day";
             elseif ($current_day >= 0 AND $current_day < $days) $class = "normal-day";
             else $class = "other-day";
 
-            $output .= date("w", $current_day_ts) == fusion_get_settings('week_start') ? "<tr class='calendar-row'><td class='".$class."'>" : "<td class='".$class."'>";
-            $output .= "<div class='calendar-day'><a href='".clean_request("day=".date("Y-m-d", $current_day_ts), ['cat_id'])."' class='calendar-link-day'>".date("d", $current_day_ts)."</a></div>";
+            $output .= showdate("%w", $current_day_ts) == fusion_get_settings('week_start') ? "<tr class='calendar-row'><td class='".$class."'>" : "<td class='".$class."'>";
+            $output .= "<div class='calendar-day'><a href='".clean_request("day=".showdate("%Y-%m-%d", $current_day_ts), ['cat_id'])."' class='calendar-link-day'>".showdate("%d", $current_day_ts)."</a></div>";
 
             if (!empty($events)) {
                 foreach($events as $key => $event) {
-                    if (date("Y-m-d", $current_day_ts) >= date("Y-m-d", $event['event_start']) && date("Y-m-d", $current_day_ts) <= date("Y-m-d", $event['event_end'])) {
+                    if (showdate("%Y-%m-%d", $current_day_ts) >= showdate("%Y-%m-%d", $event['event_start']) && showdate("%Y-%m-%d", $current_day_ts) <= showdate("%Y-%m-%d", $event['event_end'])) {
                         if ($options['list_events']) $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='item-list calendar-link-item'>".$event['event_title']."</a>";
                         if ($options['mark_events']) $output .= "<div class='item-mark'><i class='fas fa-circle'></i></div'>";
                     }
                 }
             }
 
-            $output .= date("w", $current_day_ts) == date("w", strtotime(6 - fusion_get_settings('week_start')." day", $current_day_ts)) ? "</td></tr>" : "</td>";
+            $output .= showdate("%w", $current_day_ts) == showdate("%w", strtotime(6 - fusion_get_settings('week_start')." day", $current_day_ts)) ? "</td></tr>" : "</td>";
         }
         $output .= "</tbody>\n</table>\n</div>\n";
 
@@ -449,8 +449,8 @@ if (!function_exists('main_calendar_day')) {
         $output = '';
         if ($options['show_title']) {
             $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("day=".date("Y-m-d", $day_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_day", $day_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("day=".date("Y-m-d", $day_after), ['cat_id'])."'>".Functions::showcdate("titledate_day", $day_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
+            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("day=".showdate("%Y-%m-%d", $day_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_day", $day_before)."</a></div>";
+            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("day=".showdate("%Y-%m-%d", $day_after), ['cat_id'])."'>".Functions::showcdate("titledate_day", $day_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
             $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_day", $date)."</h3>";
             $output .= "</div>\n";
         }
@@ -467,7 +467,7 @@ if (!function_exists('main_calendar_day')) {
         $output .= "<th style='width: 75px;' class='text-center'>".$locale['calendar_0265']."</th><th>";
         if (!empty($events)) {
             foreach($events as $key => $event) {
-                if (date("Y-m-d", $date) >= date("Y-m-d", $event['event_start']) && date("Y-m-d", $date) <= date("Y-m-d", $event['event_end']) && $event['event_allday']) {              
+                if (showdate("%Y-%m-%d", $date) >= showdate("%Y-%m-%d", $event['event_start']) && showdate("%Y-%m-%d", $date) <= showdate("%Y-%m-%d", $event['event_end']) && $event['event_allday']) {              
                     $output .= "<div class='pull-left m-r-30'>";
                     $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='calendar-link-item'>".$event['event_title']."</a>\n";
                     $output .= "<div class='small'>".Functions::cdatetime($event, ['show_location' => TRUE, 'show_allday' => FALSE])."</div>\n";
