@@ -118,15 +118,15 @@ if (!function_exists('display_calendar_archive')) {
                         $output .= '<div class="row">';
                         $output .= '<div class="col-md-3">
                                         <i class="fas fa-tag m-r-5" title="'.fusion_get_locale('calendar_0360').'"></i>
-                                        <a title="'.htmlspecialchars($event['event_title']).'" href="'.clean_request("view=list&event_id=".$event['event_id'], ['cat_id']).'">'.trimlink($event['event_title'], 50).'</a>
+                                        <a title="'.strip_tags($event['event_title']).'" href="'.clean_request("view=list&event_id=".$event['event_id'], ['cat_id']).'">'.trimlink(strip_tags($event['event_title']), 50).'</a>
                                     </div>';
                         $output .= '<div class="col-md-5">
                                         <i class="fas fa-align-left m-r-5" title="'.fusion_get_locale('calendar_0361').'"></i>
-                                        <span title="'.htmlspecialchars($event['event_description']).'">'.trimlink(parse_textarea($event['event_description']), 75).'</span>
+                                        <span title="'.strip_tags($event['event_description']).'">'.trimlink(strip_tags(parse_textarea($event['event_description'])), 75).'</span>
                                     </div>';
                         $output .= '<div class="col-md-2">
                                     <i class="fas fa-folder m-r-5" title="'.fusion_get_locale('calendar_0362').'"></i>
-                                    <span title="'.htmlspecialchars($info['calendar_categories'][$event['calendar_cat_id']]['calendar_cat_name']).'">'.trimlink($info['calendar_categories'][$event['calendar_cat_id']]['calendar_cat_name'], 50).'</span>
+                                    <span title="'.strip_tags($info['calendar_categories'][$event['calendar_cat_id']]['calendar_cat_name']).'">'.trimlink($info['calendar_categories'][$event['calendar_cat_id']]['calendar_cat_name'], 50).'</span>
                                 </div>';
                         $output .= '<div class="col-md-2"><i class="fas fa-calendar-day m-r-5" title="'.fusion_get_locale('calendar_0363').'"></i>'.Functions::showcdate('shortdate', $event['event_start']).'</div>';
                         $output .= '</div>';
