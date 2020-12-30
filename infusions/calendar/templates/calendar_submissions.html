@@ -1,0 +1,33 @@
+{%opentable%}
+    {calendar_submit.{
+        <div class='well spacer-xs'>{%guidelines%}</div>
+        {%openform%}
+        {%event_title%}
+        {%event_description%}
+        <div class='list-group-item m-b-10'>
+            {%event_allday%}
+            {%event_start%}
+            {%event_end%}
+            {%event_location%}  
+        </div>  
+        <div class='list-group-item m-b-10'>  
+            {%event_attachment%}
+        </div>  
+        <div class='list-group-item m-b-10'>
+            {%calendar_cat_id%}
+            {%event_language%}
+        </div> 
+        {%calendar_submit%}
+        {%closeform%}
+    }}
+    {calendar_confirm_submit.{
+        <div class='well text-center'>
+        <p class='strong'>{%title%}</p>
+        <p class='strong'>{%submit_link%}</p>
+        <p class='strong'>{%index_link%}</p>
+        </div>
+    }}
+    {calendar_no_submit.{
+        <div class='well text-center'>{%text%}</div>
+    }}
+{%closetable%}

@@ -1,0 +1,29 @@
+{%opentable%}
+<div class="calendar-cat">
+<div class='spacer-sm'>{%breadcrumb%}</div>
+<div class='row equal-height m-t-15'>
+    {categories.{
+    <div id='calendar-{%calendar_cat_id%}' class='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                <h4 class='panel-title'>
+                    <i class='fa fa-fw fa-folder m-r-10'></i><a href='{%calendar_cat_link%}' class='strong'>{%calendar_cat_name%}</a>
+                    <div class="pull-right">{%calendar_cat_ical%}</div>
+                </h4>
+            </div>
+            <div class='panel-body'>
+                <div class='calendar-text overflow-hide m-t-5'>{%calendar_cat_description%}</div>  
+            </div>
+            <div class='panel-body'>
+                <h4>{%events_title%}</h4>
+                <div>{%events_list%}</div>
+            </div>
+        </div>
+    </div>
+    }}
+</div>
+{no_item.{
+    <div class='well text-center m-t-15'>{%message%}</div>
+}}
+</div>
+{%closetable%}
