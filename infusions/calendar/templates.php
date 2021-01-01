@@ -36,8 +36,10 @@ if (!function_exists('display_main_calendar')) {
             $html->set_tag('calendar_view', main_calendar_year($_GET['year'], $info['calendar_items']));
         } elseif (isset($_GET['day']) && !empty($_GET['day'])) {                
             $html->set_tag('calendar_view', main_calendar_day($_GET['day'], $info['calendar_items']));
-        } else {
+        } elseif (isset($_GET['month']) && !empty($_GET['month'])) {   
             $html->set_tag('calendar_view', main_calendar_month($_GET['month'], $info['calendar_items']));
+        } else {   
+            $html->set_tag('calendar_view', main_calendar_month(showdate("%Y-%m", TIME), $info['calendar_items']));
         } 
  
         echo $html->get_output();
@@ -157,7 +159,7 @@ if (!function_exists('display_calendar_archive')) {
 if (!function_exists('display_calendar_items')) {
     function display_calendar_items($info) {
         add_to_head("<link rel='stylesheet' type='text/css' href='".CALENDAR_CSS."calendar.css'>"); 
-        $locale = fusion_get_locale('', CALENDAR_LOCALE);
+        $locale = fusion_get_locale('', CALENDAR_LOCALE); $i = 0;
 
         $html = \PHPFusion\Template::getInstance('calendar_item');
         $html->set_template(CALENDAR_TEMPLATES.'calendar_items.html');
@@ -555,7 +557,7 @@ if (!function_exists('display_calendar_menu')) {
         echo "<div class='pull-right'><a class='text-muted' title='".$locale['calendar_0366']."' href='".CALENDAR."ical.php'><i class='fas fa-calendar-plus'></i></a></div>";
         echo "<ul class='block calendar-filter'>\n";
         foreach ($menu as $key => $link) {
-            echo "<li class='".(isset($_GET[$key]) || $_GET['view'] == $key ? "active strong" : "")."'>";
+            echo "<li class='".(isset($_GET[$key]) || (isset($_GET['view']) && $_GET['view'] == $key) ? "active strong" : "")."'>";
             echo "<a class='".$link['class']."' title='".$link['title']."' href='".$link['link']."'><i class='".$link['icon']." m-r-5'></i>".$link['title']."</a>";
             echo "</li>\n";
         }
