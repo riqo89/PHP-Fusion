@@ -45,7 +45,7 @@ if (!function_exists('display_main_rss')) {
 
 if (!function_exists('render_rss_item')) {
     function render_rss_item($info) {
-        $locale = fusion_get_locale("", RSS_LOCALE);
+        $locale = fusion_get_locale("", RSS_LOCALE); $i = 0;
         $html = \PHPFusion\Template::getInstance('rss_item');
         $html->set_template(__DIR__.'/templates/rss_info.html');
         $html->set_tag('breadcrumb', render_breadcrumbs());
@@ -54,7 +54,7 @@ if (!function_exists('render_rss_item')) {
         $html->set_tag('cat_locale', $info['cat_locale']);
         $html->set_tag('cat_top', $info['cat_top']);
         $html->set_tag('rss_get_name', $info['rss_get_name']);
-        $i = 0;
+        $html->set_tag('rss_get_desc', $info['rss_get_desc']);
 
         if (!empty($info['rss_items'])) {
             add_to_jquery('$(".top").on("click",function(e){e.preventDefault();$("html, body").animate({scrollTop:0},100);});');
@@ -141,7 +141,7 @@ if (!function_exists('render_rss_content')) {
 
             if($options['show_pubDate'] && !empty($item['pubDate'])) {
                 $output .= '<div class="pull-right">';
-                $output .= '<span title="'.showdate("longdate", $item['pubDate']).'"><i class="fa fa-calendar"></i>&nbsp;'.showdate("newsdate", $item['pubDate']).'</span>';
+                $output .= '<span><i class="fa fa-calendar"></i>&nbsp;'.timer($item['pubDate']).'</span>';
                 $output .= '</div>';
             }
 

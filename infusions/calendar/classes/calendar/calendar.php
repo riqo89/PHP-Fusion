@@ -63,7 +63,7 @@ abstract class Calendar extends CalendarServer {
 
         $info += $extended_info;
 
-        $info = array_merge($info, self::get_CalendarData($filters));
+        $info = array_merge($info, self::get_CalendarData($filters, $this->is_catid ? $this->catid : 0));
 
         if ($this->is_list) {
             set_title(SiteLinks::get_current_SiteLinks(INFUSIONS.'calendar/calendar.php', 'link_name'));
@@ -139,7 +139,10 @@ abstract class Calendar extends CalendarServer {
      *
      * @return array
      */
-    public static function get_CalendarData(array $filters = []) {
+    public static function get_CalendarData(array $filters = [], $cat = 0) {
+
+        self::$locale = fusion_get_locale("", CALENDAR_LOCALE);
+        
         $info = [
             'calendar_items'      => [],
             'cat_locale'          => self::$locale['calendar_0001'],
@@ -173,7 +176,6 @@ abstract class Calendar extends CalendarServer {
                 $info['calendar_categories'][$c_data['calendar_cat_id']]['ical']['title'] = self::$locale['calendar_0365'];
                 $info['calendar_categories'][$c_data['calendar_cat_id']]['ical']['link'] = CALENDAR."ical.php?cat_id=".$c_data['calendar_cat_id'];
                 $info['calendar_get'] = $cat;
-
                 if (!empty($info['calendar_categories'][$info['calendar_get']]['calendar_cat_name'])) {
                     $info['calendar_get_name'] = $info['calendar_categories'][$info['calendar_get']]['calendar_cat_name'];
                 }

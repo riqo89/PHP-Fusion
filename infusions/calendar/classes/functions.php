@@ -192,7 +192,7 @@ class Functions {
         }
 
         if ($options['filter_year']) {
-            echo form_datepicker('year', '', strtotime($_GET['year']."-01"), [
+            echo form_datepicker('year', '', isset($_GET['year']) ? strtotime($_GET['year']."-01") : TIME, [
                 'placeholder'       => $locale['calendar_0301'],
                 'date_format_js'    => 'YYYY',
                 'date_format_php'   => 'Y',
@@ -208,7 +208,7 @@ class Functions {
         }
 
         if ($options['filter_month']) {
-            echo form_datepicker('month', '', strtotime($_GET['month']), [
+            echo form_datepicker('month', '', isset($_GET['month']) ? strtotime($_GET['month']) : TIME, [
                 'placeholder'       => $locale['calendar_0301'],
                 'date_format_js'    => 'YYYY-MM',
                 'date_format_php'   => 'Y-m',
@@ -224,7 +224,7 @@ class Functions {
         }
 
         if ($options['filter_cat']) {
-            echo form_select('cat_id', '', $_GET['cat_id'], [
+            echo form_select('cat_id', '', isset($_GET['cat_id']) ? $_GET['cat_id'] : '', [
                 'allowclear'        => TRUE,
                 'placeholder'       => $locale['calendar_0300'],
                 'options'           => $cat_opts,
