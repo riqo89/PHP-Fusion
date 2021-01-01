@@ -15,6 +15,7 @@ Ereignisse werden grafisch über eine Tages-, Monats- oder Jahresansicht angezei
    - Alle Ereignisse
    - Alle Ereignisse innerhalb einer Kategorie
    - Nur aktuelles Ereignis
+
 etc.
 
 ---
@@ -36,6 +37,7 @@ Events are graphically displayed in a day, month or year view. The event list sh
     - All events
     - All events within a category
     - Current event only
+    
 etc.
 
 # Screenshots
