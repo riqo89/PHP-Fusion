@@ -32,6 +32,9 @@ RSS feeds are shown separately according to the respective feeds, with title, de
 - Setting the update interval for client-side cron jobs
 - Update via crontab possible (recommended), e.g. via cURL (deactivate client-side update, pass force_cron = 1)
 
+```
+curl www.yourdomain.com/infusions/rss/cron.php?force_cron=1
+```
 
 # Screenshots
 ![RSS-Screenshots](screenshots.gif)
