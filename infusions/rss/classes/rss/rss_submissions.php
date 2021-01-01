@@ -101,7 +101,7 @@ class RssSubmissions extends RssServer {
                             'error_text' => $this->locale['rss_0271'],
                             'required'   => TRUE
                         ]),
-                    'rss_link'   => form_text('rss_link', $this->locale['rss_0100'], $criteriaArray['rss_link'],
+                    'rss_link'   => form_text('rss_link', $this->locale['rss_0256'], $criteriaArray['rss_link'],
                         [
                             'error_text' => $this->locale['rss_0271'],
                             'required'   => TRUE
