@@ -164,6 +164,47 @@ class Functions {
         return strtr((string)$format, $caracs);
     }
 
+    public static function calendar_title($date = TIME, $options = []) {
+
+        $default_options = [
+            'interval'      => 'month',
+            'class'         => 'well',
+            'icon_before'   => 'fas fa-arrow-left m-r-10',
+            'icon_after'    => 'fas fa-arrow-right m-l-10',
+            'icon_now'      => 'far fa-calendar-alt m-r-10'
+
+        ];  
+        $options += $default_options;
+
+        $cdate = [
+            'now'           => $date,
+            'before'        => strtotime("-1 ".$options['interval'], $date),
+            'after'         => strtotime("+1 ".$options['interval'], $date),
+        ];
+
+        $param = [
+            'day'           => ['%Y-%m-%d', 'titledate_day'],
+            'month'         => ['%Y-%m', 'titledate_month'],
+            'year'          => ['%Y', 'titledate_year']
+        ];     
+
+        ob_start();
+        echo "<div class='".$options['class']."'>\n";
+        echo "<div class='row'>\n";
+        echo "<div class='col-md-3 col-xs-6 text-left m-b-10'>\n";
+        echo "<a href='".clean_request([$options['interval'] => showdate($param[$options['interval']][0], $cdate['before'])], ['cat_id'])."'><i class='".$options['icon_before']."'></i>".Functions::showcdate($param[$options['interval']][1], $cdate['before'])."</a>\n";
+        echo "</div>\n";
+        echo "<div class='col-md-3 col-xs-6 col-md-push-6 text-right m-b-10'>\n";
+        echo "<a href='".clean_request([$options['interval'] => showdate($param[$options['interval']][0], $cdate['after'])], ['cat_id'])."'>".Functions::showcdate($param[$options['interval']][1], $cdate['after'])."<i class='".$options['icon_after']."'></i></a>\n";
+        echo "</div>\n";
+        echo "<div class='col-md-6 col-xs-12 col-md-pull-3 text-center'>\n";
+        echo "<h3 class='m-0'><i class='".$options['icon_now']."'></i>".Functions::showcdate($param[$options['interval']][1], $cdate['now'])."</h3>\n";
+        echo "</div>\n";
+        echo "</div>\n</div>\n";
+
+        return ob_get_clean();
+    }
+
     public static function calendar_filter($options = []) {
         
 
