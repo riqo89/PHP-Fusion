@@ -284,22 +284,17 @@ if (!function_exists('main_calendar_year')) {
             'mark_events'       => TRUE,
             'shorten_weekdays'  => 2,
         ];
-
         $options += $default_options;
 
         $date = !$date ? TIME : mktime(0, 0, 0, 1, 1, $date);;
-        $year_before   = strtotime("-1 year", $date);
-        $year_after    = strtotime("+1 year", $date);
         $months = explode("|", fusion_get_locale('months'));
 
         $output = "<div class='container-fluid calendar-year p-0'>";
 
         if ($options['show_title']) {
-            $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("year=".showdate("%Y", $year_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_year", $year_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("year=".showdate("%Y", $year_after), ['cat_id'])."'>".Functions::showcdate("titledate_year", $year_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
-            $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_year", $date)."</h3>";
-            $output .= "</div>\n";
+            $output .= Functions::calendar_title($date, [
+                'interval'      => 'year'
+            ]);
         }
 
         if ($options['show_filters']) {
@@ -343,7 +338,6 @@ if (!function_exists('main_calendar_month')) {
             'shorten_weekdays'  => 0,
             'sum_days'          => 0
         ];
-
         $options += $default_options;
 
         $date           = !$date ? TIME : strtotime($date);
@@ -354,9 +348,6 @@ if (!function_exists('main_calendar_month')) {
         $day_last       = date("N", $date_last);
         $days_before    = $day_first - fusion_get_settings('week_start');
         $days_after     = 6 - $day_last + fusion_get_settings('week_start');
-
-        $month_before   = strtotime("-1 month", $date);
-        $month_after    = strtotime("+1 month", $date);
         
         if ($days_before < 0) {
             $days_before += 7;
@@ -385,11 +376,9 @@ if (!function_exists('main_calendar_month')) {
 
         $output = '';
         if ($options['show_title']) {
-            $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("month=".showdate("%Y-%m", $month_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_month", $month_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("month=".showdate("%Y-%m", $month_after), ['cat_id'])."'>".Functions::showcdate("titledate_month", $month_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
-            $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_month", $date)."</h3>";
-            $output .= "</div>\n";
+            $output .= Functions::calendar_title($date, [
+                'interval' => 'month'
+            ]);
         }
 
         if ($options['show_filters']) {
@@ -441,27 +430,22 @@ if (!function_exists('main_calendar_day')) {
             'show_title'    =>     TRUE,
             'show_filters'  =>     TRUE
         ];
-
         $options += $default_options;
 
         $date = !$date ? TIME : strtotime($date);
-        $day_before   = strtotime("-1 day", $date);
-        $day_after    = strtotime("+1 day", $date);
 
         $output = '';
         if ($options['show_title']) {
-            $output .= "<div class='well'>";
-            $output .= "<div class='pull-left m-b-10'><a href='".clean_request("day=".showdate("%Y-%m-%d", $day_before), ['cat_id'])."'><i class='fas fa-arrow-left m-r-10'></i>".Functions::showcdate("titledate_day", $day_before)."</a></div>";
-            $output .= "<div class='pull-right m-b-10'><a href='".clean_request("day=".showdate("%Y-%m-%d", $day_after), ['cat_id'])."'>".Functions::showcdate("titledate_day", $day_after)."<i class='fas fa-arrow-right m-l-10'></i></a></div>";
-            $output .= "<h3 class='text-center m-0'><i class='far fa-calendar-alt m-r-10'></i>".Functions::showcdate("titledate_day", $date)."</h3>";
-            $output .= "</div>\n";
+            $output .= Functions::calendar_title($date, [
+                'interval'      => 'day'
+            ]);
         }
 
         if ($options['show_filters']) {
             $output .= Functions::calendar_filter([
                 'filter_month'  => FALSE,
                 'filter_year'   => FALSE,
-                'form_hidden'   => ['day'   => $_GET['day']]
+                'form_hidden'   => ['day'   => isset($_GET['day']) ? $_GET['day'] : '']
             ]);
         }
 
