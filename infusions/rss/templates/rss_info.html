@@ -14,11 +14,17 @@
         <div id="collapse-rss-item-{%rss_id%}" class="panel-collapse collapse {%rss_collapse%}" role="tabpanel" aria-labelledby="rss-item-{%rss_id%}">
             <div class="panel-body">
                 {%rss_content%}
-                <div class="well p-5 m-b-0" style="margin-top: 10px;">                    
-                    {%edit_link%}
-                    {%delete_link%}
-                    {%rss_date%}
-                    {%rss_link%}                    
+                <div class="well p-10 m-b-0">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-3 text-left">
+                            <span class="m-l-10">{%edit_link%}</span>
+                            <span class="m-l-10">{%delete_link%}</span>
+                        </div>                  
+                        <div class="col-md-6 col-xs-9 text-right">
+                            <span class="m-r-10">{%rss_link%}</span>
+                            <span class="m-r-10">{%rss_date%}</span>
+                        </div>
+                    </div>           
                 </div>
             </div>
         </div>

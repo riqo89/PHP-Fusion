@@ -64,10 +64,10 @@ if (!function_exists('render_rss_item')) {
                     'rss_collapse' => $i++ == 0 ? " in" : "",
                     'rss_title'    => $rss_data['rss_title'],
                     'rss_content'  => render_rss_content($rss_data['rss_content'], ['max_items' => 20]),
-                    'rss_link'     => "<span class='pull-right m-r-20'><i class='fas fa-rss-square m-r-5'></i><a class='small' href='".$rss_data['rss_link']."' title='".$rss_data['rss_link']."'>".$locale['rss_0256']."</a></span>",
-                    'rss_date'     => "<span class='pull-right m-r-10'><i class='fa fa-calendar m-r-5'></i><span class='small' title='".sprintf($locale['rss_0262'], showdate("longdate", $rss_data['rss_datestamp']))."'>".showdate("forumdate", $rss_data['rss_datestamp'])."</span></span>",
-                    'edit_link'    => !empty($rss_data['edit']['link']) ? "<a href='".$rss_data['edit']['link']."' title='".$rss_data['edit']['title']."'><i class='fa fa-fw fa-pencil m-l-10'></i></a>" : '',
-                    'delete_link'  => !empty($rss_data['delete']['link']) ? "<a href='".$rss_data['delete']['link']."' title='".$rss_data['delete']['title']."'><i class='fa fa-fw fa-trash m-l-10'></i></a>" : ''
+                    'rss_link'     => "<i class='fas fa-rss-square m-r-5'></i><a href='".$rss_data['rss_link']."' title='".$rss_data['rss_link']."'>".$locale['rss_0256']."</a>",
+                    'rss_date'     => "<i class='fa fa-calendar m-r-5'></i><span title='".sprintf($locale['rss_0262'], showdate("longdate", $rss_data['rss_datestamp']))."'>".showdate("forumdate", $rss_data['rss_datestamp'])."</span>",
+                    'edit_link'    => !empty($rss_data['edit']['link']) ? "<a href='".$rss_data['edit']['link']."' title='".$rss_data['edit']['title']."'><i class='fa fa-fw fa-pencil'></i></a>" : '',
+                    'delete_link'  => !empty($rss_data['delete']['link']) ? "<a href='".$rss_data['delete']['link']."' title='".$rss_data['delete']['title']."'><i class='fa fa-fw fa-trash'></i></a>" : ''
                 ]);
             }
         } else {
@@ -123,7 +123,7 @@ if (!function_exists('render_rss_content')) {
             'show_enclosure'        => 'image',
             'show_link_host'        => FALSE,
             'max_items'             => 0,
-            'max_desc_length'       => 500,
+            'max_desc_length'       => 250,
             'is_decoded'            => FALSE
         ];
         
@@ -133,48 +133,68 @@ if (!function_exists('render_rss_content')) {
         if(!$options['is_decoded']) $content = \Defender::decode($content);
         if($options['max_items']) $content = array_slice($content, 0, $options['max_items']);
 
-        $output = '<div class="overflow-hide">';
+        $output = '<div class="container-fluid p-0">';
         foreach($content as $key => $item) {
-
             $enclosure = ['video' => '', 'image' => ''];
-            $output .= '<span '.(!$options['show_pubDate'] ? 'title="'.showdate("longdate", $item['pubDate']).'"' : '').'><a href="'.$item['link'].'" target="_blank">'.$item['title'].'</a></span>';
+            
+            if($key != 0) $output .= '<hr class="m-t-0 m-b-10">';
+            $output .= '<div class="row m-b-5">';                
 
-            if($options['show_pubDate'] && !empty($item['pubDate'])) {
-                $output .= '<div class="pull-right">';
-                $output .= '<span><i class="fa fa-calendar"></i>&nbsp;'.timer($item['pubDate']).'</span>';
+                if($options['show_enclosure']) {
+                    $output .= '<div class="col-md-2 m-t-5">';
+                    if(preg_match("/video/", $item['enclosure']['type']) && !empty($item['enclosure']['url'])) {
+                        $enclosure['video'] .= '<video style="object-fit: cover; width: 100%; height: 100px;" src="'.$item['enclosure']['url'].'" alt="'.$item['title'].'"></video>';
+                    } 
+                    if(preg_match("/image/", $item['enclosure']['type']) && !empty($item['enclosure']['url'])) {
+                        $enclosure['image'] .= '<a href="'.$item['link'].'" title="'.$item['title'].'" alt="'.$item['title'].'">';
+                        $enclosure['image'] .= '<img class="img-rounded" style="object-fit: cover; width: 100%; height: 100px;" src="'.$item['enclosure']['url'].'" alt="'.$item['title'].'" />';
+                        $enclosure['image'] .= '</a>';
+                    } else {
+                        $enclosure['image'] .= '<a href="'.$item['link'].'" title="'.$item['title'].'" alt="'.$item['title'].'">';
+                        $enclosure['image'] .= '<img class="img-rounded hidden-xs" style="object-fit: cover; width: 100%; height: 100px;" src="'.IMAGES.'no_photo.png" alt="'.$item['title'].'" />';
+                        $enclosure['image'] .= '</a>';
+                    }
+
+                    switch($options['show_enclosure']) {  
+                        case 'video':   $output .= $enclosure['video']; break;
+                        case 'image':   $output .= $enclosure['image']; break;
+                        case 'both':    $output .= $enclosure['image'].$enclosure['video']; break;                   
+                    }
+                    $output .= '</div>';
+                }
+
+                $output .= '<div class="col-md-'.($options['show_enclosure'] ? 10 : 12).' m-t-5">';
+                    $output .= '<div class="row">'; 
+
+                        $output .= '<div class="'.($options['show_pubDate'] ? 'col-md-8 col-xs-7' : 'col-md-12 col-xs-12').'" '.(!$options['show_pubDate'] ? 'title="'.showdate("longdate", $item['pubDate']).'"' : '').'>';
+                        $output .= '<a href="'.$item['link'].'" target="_blank">'.$item['title'].'</a>';
+                        $output .= '</div>';
+
+                        if($options['show_pubDate'] && !empty($item['pubDate'])) {
+                            $output .= '<div class="col-md-4 col-xs-5 text-right">';
+                            $output .= '<i class="fa fa-calendar m-r-5"></i>'.timer($item['pubDate']);
+                            $output .= '</div>';
+                        }
+
+                    $output .= '</div><div class="row">';
+                        $output .= '<div class="col-md-12 m-t-5">'; 
+
+                            if($options['show_description'] && !empty($item['description'])) {   
+                                $output .= "<span title='".$item['description']."'>";         
+                                $output .= trimlink(strip_tags(parse_textarea($item['description'], FALSE, TRUE)), $options['max_desc_length']);      
+                                $output .= "</span>";          
+                            }
+
+                            if($options['show_link_host']) {
+                                $output .= "<p class='pull-right small m-b-0 m-t-3' title='".$item['link']."'><em>";
+                                $output .= parse_url($item['link'])['host'];
+                                $output .= "</em></p>";
+                            }
+
+                        $output .= '</div>';
+                    $output .= '</div>';
                 $output .= '</div>';
-            }
-
-            if(!empty($item['enclosure'])) {
-                if(preg_match("/video/", $item['enclosure']['type']) && !empty($item['enclosure']['url'])) {
-                    $enclosure['video'] .= '<video class="pull-left m-r-10" style="object-fit: cover; width: 150px; height: 100px;" src="'.$item['enclosure']['url'].'" alt="'.$item['title'].'"></video>';
-                } 
-                if(preg_match("/image/", $item['enclosure']['type']) && !empty($item['enclosure']['url'])) {
-                    $enclosure['image'] .= '<a href="'.$item['link'].'" title="'.$item['title'].'" alt="'.$item['title'].'">';
-                    $enclosure['image'] .= '<img class="pull-left m-r-10" style="object-fit: cover; width: 150px; height: 100px;" src="'.$item['enclosure']['url'].'" alt="'.$item['title'].'" />';
-                    $enclosure['image'] .= '</a>';
-                }
-                switch($options['show_enclosure']) {  
-                    case 'video':   $output .= $enclosure['video']; break;
-                    case 'image':   $output .= $enclosure['image']; break;
-                    case 'both':    $output .= $enclosure['image'].$enclosure['video']; break;                   
-                }
-            }
-
-            $output .= '<div class="clearfix">';
-            if($options['show_description'] && !empty($item['description'])) {   
-                $output .= "<span title='".$item['description']."'>";         
-                $output .= trimlink(strip_tags(parse_textarea($item['description'], FALSE, TRUE)), $options['max_desc_length']);      
-                $output .= "</span>";          
-            }
-
-            if($options['show_link_host']) {
-                $output .= "<p class='pull-right small m-b-0 m-t-3' title='".$item['link']."'><em>";
-                $output .= parse_url($item['link'])['host'];
-                $output .= "</em></p>";
-            }
             $output .= '</div>';
-            $output .= '<hr class="m-t-0 m-b-10">';
         }
         $output .= '</div>';
         
