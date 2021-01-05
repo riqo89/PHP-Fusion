@@ -166,6 +166,7 @@ if (!function_exists('render_rss_content')) {
                 $output .= '<div class="col-md-'.($options['show_enclosure'] ? 10 : 12).' m-t-5">';
                     $output .= '<div class="row">'; 
 
+
                         $output .= '<div class="'.($options['show_pubDate'] ? 'col-md-8 col-xs-7' : 'col-md-12 col-xs-12').'" '.(!$options['show_pubDate'] ? 'title="'.showdate("longdate", $item['pubDate']).'"' : '').'>';
                         $output .= '<a href="'.$item['link'].'" target="_blank">'.$item['title'].'</a>';
                         $output .= '</div>';
