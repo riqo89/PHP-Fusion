@@ -206,7 +206,8 @@ class Functions {
     }
 
     public static function calendar_filter($options = []) {
-        
+
+        $locale = fusion_get_locale('', CALENDAR_LOCALE);
 
         $default_options = [
             'filter_cat'    => TRUE,
@@ -215,17 +216,7 @@ class Functions {
             'form_hidden'   => []
         ]; 
         $options += $default_options;
-
-        $locale = fusion_get_locale('', CALENDAR_LOCALE);
         
-        $cat_opts = [];
-        $result = dbquery("SELECT calendar_cat_id, calendar_cat_name FROM ".DB_CALENDAR_CATS." GROUP BY calendar_cat_id ORDER BY calendar_cat_name ASC");
-        if (dbrows($result) > 0) {
-            while ($data = dbarray($result)) {
-                $cat_opts[$data['calendar_cat_id']] = $data['calendar_cat_name'];
-            }
-        }
-
         ob_start();
         echo openform('calendar_filter', 'get', FUSION_REQUEST);
         foreach ($options['form_hidden'] as $key => $value) {
@@ -265,20 +256,22 @@ class Functions {
         }
 
         if ($options['filter_cat']) {
-            echo form_select('cat_id', '', isset($_GET['cat_id']) ? $_GET['cat_id'] : '', [
+            echo form_select_tree('cat_id', '', isset($_GET['cat_id']) ? $_GET['cat_id'] : '', [
+                'no_root'           => TRUE,
                 'allowclear'        => TRUE,
                 'placeholder'       => $locale['calendar_0300'],
-                'options'           => $cat_opts,
                 'class'             => 'pull-right',
-                'inner_width'       => '150px'
-            ]);
-
+                'inner_width'       => '150px',
+                'query'             => multilang_table('CA') ? ' WHERE '.in_group('calendar_cat_language', LANGUAGE) : ''
+            ], DB_CALENDAR_CATS, "calendar_cat_name", "calendar_cat_id", 0);
+               
             add_to_jquery("
                 $('#cat_id').bind('change', function(e) {
                     $(this).closest('form').submit();
                 });
             ");
         }
+
         echo closeform();
 
         return ob_get_clean();

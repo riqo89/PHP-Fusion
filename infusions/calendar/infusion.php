@@ -92,7 +92,7 @@ $inf_insertdbrow[] = DB_SETTINGS_INF." (settings_name, settings_value, settings_
 
 // Multilanguage table
 $inf_mlt[] = [
-    "title"  => $locale['setup_3011'],
+    "title"  => $locale['calendar_setup_03'],
     "rights" => "CA"
 ];
 
