@@ -5,9 +5,12 @@ Zur Installation die entsprechenden Ordner hochladen und wie gewohnt in den Eins
 ### Infusionen
 - [Kalender](infusions/calendar)
     - [Nächste Ereignisse Panel](infusions/calendar_panel)
-  
- - [RSS-Parser](infusions/rss)
+
+- [RSS-Parser](infusions/rss)
     - [Letzte Feeds Panel](infusions/rss_panel)
+
+- [Forenthema-Benachrichtigung](infusions/forum_thread_notify)
+
 ---
 
 Here you can find my addons and infusions developed for PHP-Fusion v9. The infusions may be compatible with older versions.
@@ -16,6 +19,8 @@ To install, upload the appropriate folder and install it in the settings as usua
 ### Infusions
 - [Calendar](infusions/calendar)
     - [Next Events Panel](infusions/calendar_panel)
-  
- - [RSS-Parser](infusions/rss)
+
+- [RSS-Parser](infusions/rss)
     - [Last Feeds Panel](infusions/rss_panel)
+
+- [Forum thread notification](infusions/forum_thread_notify)
