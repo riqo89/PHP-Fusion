@@ -4,7 +4,7 @@
 | Copyright (C) PHP-Fusion Inc
 | https://www.phpfusion.com/
 +--------------------------------------------------------+
-| Filename: user_forum-mail_include_var.php
+| Filename: user_forum_thread_notify_include_var.php
 | Author: riqo89 (riqo89@gmail.com)
 +--------------------------------------------------------+
 | This program is released as free software under the
