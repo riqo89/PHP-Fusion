@@ -180,28 +180,28 @@ if (!function_exists('display_calendar_items')) {
                 }                
 
                 $html->set_block('calendar', [
-                    'event_collapse'    => $i++ == 0 ? "in" : "",
-                    'event_id'          => $calendar_data['event_id'],
-                    'event_title'       => $calendar_data['event_title'],
-                    'event_start_title' => Functions::showcdate("longdate", $calendar_data['event_start']),
-                    'event_date'        => Functions::cdatetime($calendar_data),
-                    'event_description' => !empty($calendar_data['event_description']) ? parse_textarea($calendar_data['event_description']) : '',
-                    'event_location'    => !empty($calendar_data['event_location']) ? $calendar_data['event_location'] : '',
-                    'event_location_map'=> get_settings("calendar", "calendar_show_gmaps_iframe") && !empty($calendar_data['event_location']) ? Functions::google_maps_iframe($calendar_data['event_location']) : '',
-                    'event_organizer'   => "<a href='".BASEDIR."profile.php?lookup=".$calendar_data['user_id']."'>".$calendar_data['user_name']."</a>",
-                    'event_participation' => showparticipationform($calendar_data),
-                    'event_attachment'  => (!empty($calendar_data['event_attachment_file']) OR !empty($calendar_data['event_attachment_url'])) ? "<a href='".clean_request('attachment_id='.$calendar_data['event_id'], ['view'])."'>".$locale['calendar_0320']."</a>" : '',
+                    'event_collapse'        => $i++ == 0 ? "in" : "",
+                    'event_id'              => $calendar_data['event_id'],
+                    'event_title'           => $calendar_data['event_title'],
+                    'event_start_title'     => Functions::showcdate("longdate", $calendar_data['event_start']),
+                    'event_date'            => Functions::cdatetime($calendar_data),
+                    'event_description'     => !empty($calendar_data['event_description']) ? parse_textarea($calendar_data['event_description']) : '',
+                    'event_location'        => !empty($calendar_data['event_location']) ? $calendar_data['event_location'] : '',
+                    'event_location_map'    => get_settings("calendar", "calendar_show_gmaps_iframe") && !empty($calendar_data['event_location']) ? Functions::google_maps_iframe($calendar_data['event_location']) : '',
+                    'event_organizer'       => profile_link($calendar_data['user_id'], $calendar_data['user_name'], $calendar_data['user_status']),
+                    'event_participation'   => showparticipationform($calendar_data),
+                    'event_attachment'      => (!empty($calendar_data['event_attachment_file']) OR !empty($calendar_data['event_attachment_url'])) ? "<a href='".clean_request('attachment_id='.$calendar_data['event_id'], ['view'])."'>".$locale['calendar_0320']."</a>" : '',
 
-                    'show_description'  => empty($calendar_data['event_description']) ? "hidden" : "",
-                    'show_location'     => empty($calendar_data['event_location']) ? "hidden" : "",
-                    'show_attachment'   => (empty($calendar_data['event_attachment_file']) AND empty($calendar_data['event_attachment_url'])) ? "hidden" : "",
+                    'show_description'      => empty($calendar_data['event_description']) ? "hidden" : "",
+                    'show_location'         => empty($calendar_data['event_location']) ? "hidden" : "",
+                    'show_attachment'       => (empty($calendar_data['event_attachment_file']) AND empty($calendar_data['event_attachment_url'])) ? "hidden" : "",
 
-                    'event_cat'         => "<i class='fa fa-fw fa-folder m-r-5'></i>".$info['calendar_categories'][$calendar_data['calendar_cat_id']]['calendar_cat_name'],
-                    'event_datestamp'   => "<i class='fa fa-fw far fa-clock m-l-10 m-r-5'></i>".timer($calendar_data['event_datestamp']),
+                    'event_cat'             => $info['calendar_categories'][$calendar_data['calendar_cat_id']]['calendar_cat_name'],
+                    'event_datestamp'       => timer($calendar_data['event_datestamp']),
 
-                    'ical_link'         => "<a href='".$calendar_data['ical']['link']."' target='_blank' title='".$calendar_data['ical']['title']."'><i class='fa fa-fw fa-calendar-plus'></i></a>",
-                    'edit_link'         => !empty($calendar_data['edit']['link']) ? "<a href='".$calendar_data['edit']['link']."' title='".$calendar_data['edit']['title']."'><i class='fa fa-fw fa-pencil m-l-10'></i></a>" : '',
-                    'delete_link'       => !empty($calendar_data['delete']['link']) ? "<a href='".$calendar_data['delete']['link']."' title='".$calendar_data['delete']['title']."'><i class='fa fa-fw fa-trash m-l-10'></i></a>" : '',
+                    'ical_link'             => "<a href='".$calendar_data['ical']['link']."' target='_blank' title='".$calendar_data['ical']['title']."'><i class='fa fa-fw fa-calendar-plus'></i></a>",
+                    'edit_link'             => !empty($calendar_data['edit']['link']) ? "<a href='".$calendar_data['edit']['link']."' title='".$calendar_data['edit']['title']."'><i class='fa fa-fw fa-pencil m-l-10'></i></a>" : '',
+                    'delete_link'           => !empty($calendar_data['delete']['link']) ? "<a href='".$calendar_data['delete']['link']."' title='".$calendar_data['delete']['title']."'><i class='fa fa-fw fa-trash m-l-10'></i></a>" : '',
                 ]);
             }
         } else {
@@ -224,8 +224,6 @@ if (!function_exists('display_calendar_submissions')) {
         $html->set_template(CALENDAR_TEMPLATES.'calendar_submissions.html');
         $html->set_tag('opentable', fusion_get_function('opentable', $info['calendar_tablename']));
         $html->set_tag('closetable', fusion_get_function('closetable'));
-        $html->set_tag('openside', fusion_get_function('openside', 'Test'));
-        $html->set_tag('closeside', fusion_get_function('closeside'));
 
         add_to_jquery("
         $('#event_allday').click(function() {
@@ -289,26 +287,16 @@ if (!function_exists('main_calendar_year')) {
         $date = !$date ? TIME : mktime(0, 0, 0, 1, 1, $date);;
         $months = explode("|", fusion_get_locale('months'));
 
-        $output = "<div class='container-fluid calendar-year p-0'>";
+        $output = "<div class='container-fluid calendar-year p-0'>\n";
 
-        if ($options['show_title']) {
-            $output .= Functions::calendar_title($date, [
-                'interval'      => 'year'
-            ]);
-        }
+        if ($options['show_title'])     $output .= Functions::calendar_title($date, ['interval' => 'year']);
+        if ($options['show_filters'])   $output .= Functions::calendar_filter(['filter_month' => FALSE, 'filter_year' => TRUE]);
 
-        if ($options['show_filters']) {
-            $output .= Functions::calendar_filter([
-                'filter_month'  => FALSE,
-                'filter_year'   => TRUE
-            ]);
-        }
-
-        $output .= "<div class='clearfix'></div>";
+        $output .= "<div class='clearfix'></div>\n";
         for ($m = 1; $m <= 12; $m++) {
             $mdate = mktime(0, 0, 0, $m, 1, date('Y', $date));
-            $output .= in_array($m, [1, 5, 9]) ? "<div class='row'><div class='col-md-3'>" : "<div class='col-md-3'>";
-            $output .= "<h4 class='display-inline-block'><a href='".clean_request("month=".showdate("%Y-%m", $mdate), ['cat_id'])."'>".$months[$m]."</a></h4>";
+            $output .= in_array($m, [1, 5, 9]) ? "<div class='row'>\n<div class='col-md-3'>\n" : "<div class='col-md-3'>\n";
+            $output .= "<h4 class='display-inline-block'><a href='".clean_request("month=".showdate("%Y-%m", $mdate), ['cat_id'])."'>".$months[$m]."</a></h4>\n";
             $output .= main_calendar_month(date('Y-m', $mdate), $events , [
                         'show_title'        => FALSE,
                         'show_filters'      => FALSE,
@@ -317,10 +305,10 @@ if (!function_exists('main_calendar_year')) {
                         'shorten_weekdays'  => $options['shorten_weekdays'],
                         'sum_days'          => 42
                         ]);
-            $output .= in_array($m, [4, 8, 12]) ? "</div></div>" : "</div>";
+            $output .= in_array($m, [4, 8, 12]) ? "</div>\n</div>\n" : "</div>\n";
         }
 
-        $output .= "</div>";
+        $output .= "</div>\n";
         return $output;
     }
 }
@@ -349,22 +337,14 @@ if (!function_exists('main_calendar_month')) {
         $days_before    = $day_first - fusion_get_settings('week_start');
         $days_after     = 6 - $day_last + fusion_get_settings('week_start');
         
-        if ($days_before < 0) {
-            $days_before += 7;
-        } elseif ($days_before > 6) {
-            $days_before -= 7;
-        } 
+        if ($days_before < 0)       $days_before += 7;
+        elseif ($days_before > 6)   $days_before -= 7;
+        if ($days_after > 6)        $days_after -= 7;
 
-        if ($days_after > 6) {
-            $days_after -= 7;
-        }
-
-        $sum_days = $options['sum_days'] ? $options['sum_days'] : $days + $days_before + $days_after;
+        $sum_days = $options['sum_days'] ?: $days + $days_before + $days_after;
 
         $weekdays = explode("|", fusion_get_locale('weekdays', LOCALE.LOCALESET.'global.php'));
-        for ($i = 0; $i < fusion_get_settings('week_start'); $i++) {
-            array_push($weekdays, array_shift($weekdays));
-        }
+        for ($i = 0; $i < fusion_get_settings('week_start'); $i++) array_push($weekdays, array_shift($weekdays));
 
         if (!function_exists('substr_array')) {
             function substr_array(&$item, $key, $length) {
@@ -372,24 +352,13 @@ if (!function_exists('main_calendar_month')) {
             }
         }
 
-        if ($options['shorten_weekdays']) array_walk($weekdays, 'substr_array', $options['shorten_weekdays']);
+        if ($options['shorten_weekdays'])   array_walk($weekdays, 'substr_array', $options['shorten_weekdays']);
+        if ($options['show_title'])         $output .= Functions::calendar_title($date, ['interval' => 'month']);
+        if ($options['show_filters'])       $output .= Functions::calendar_filter();
 
-        $output = '';
-        if ($options['show_title']) {
-            $output .= Functions::calendar_title($date, [
-                'interval' => 'month'
-            ]);
-        }
-
-        if ($options['show_filters']) {
-            $output .= Functions::calendar_filter();
-        }
-
-        $output .= "<div class='clearfix'></div>";
+        $output = "<div class='clearfix'></div>\n";
         $output .= "<div class='table-responsive'>\n<table class='table table-bordered table-striped'>\n<thead>\n<tr>\n";
-        foreach ($weekdays as $weekday) {
-            $output .= "<th style='width: 14.25%'>".$weekday."</th>";
-        }
+        foreach ($weekdays as $weekday) $output .= "<th style='width: 14.25%'>".$weekday."</th>";
         $output .= "</tr>\n</thead>\n<tbody>\n";
 
         for ($i = 0; $i < $sum_days; $i++) {
@@ -400,19 +369,19 @@ if (!function_exists('main_calendar_month')) {
             elseif ($current_day >= 0 AND $current_day < $days) $class = "normal-day";
             else $class = "other-day";
 
-            $output .= showdate("%w", $current_day_ts) == fusion_get_settings('week_start') ? "<tr class='calendar-row'><td class='".$class."'>" : "<td class='".$class."'>";
-            $output .= "<div class='calendar-day'><a href='".clean_request("day=".showdate("%Y-%m-%d", $current_day_ts), ['cat_id'])."' class='calendar-link-day'>".showdate("%d", $current_day_ts)."</a></div>";
+            $output .= showdate("%w", $current_day_ts) == fusion_get_settings('week_start') ? "<tr class='calendar-row'>\n<td class='".$class."'>\n" : "<td class='".$class."'>\n";
+            $output .= "<div class='calendar-day'><a href='".clean_request("day=".showdate("%Y-%m-%d", $current_day_ts), ['cat_id'])."' class='calendar-link-day'>".showdate("%d", $current_day_ts)."</a></div>\n";
 
             if (!empty($events)) {
                 foreach($events as $key => $event) {
                     if (showdate("%Y-%m-%d", $current_day_ts) >= showdate("%Y-%m-%d", $event['event_start']) && showdate("%Y-%m-%d", $current_day_ts) <= showdate("%Y-%m-%d", $event['event_end'])) {
-                        if ($options['list_events']) $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='item-list calendar-link-item'>".$event['event_title']."</a>";
-                        if ($options['mark_events']) $output .= "<div class='item-mark'><i class='fas fa-circle'></i></div'>";
+                        if ($options['list_events']) $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='item-list calendar-link-item'>".$event['event_title']."</a>\n";
+                        if ($options['mark_events']) $output .= "<div class='item-mark'><i class='fas fa-circle'></i></div>\n";
                     }
                 }
             }
 
-            $output .= showdate("%w", $current_day_ts) == showdate("%w", strtotime(6 - fusion_get_settings('week_start')." day", $current_day_ts)) ? "</td></tr>" : "</td>";
+            $output .= showdate("%w", $current_day_ts) == showdate("%w", strtotime(6 - fusion_get_settings('week_start')." day", $current_day_ts)) ? "</td>\n</tr>\n" : "</td>\n";
         }
         $output .= "</tbody>\n</table>\n</div>\n";
 
@@ -435,34 +404,22 @@ if (!function_exists('main_calendar_day')) {
         $date = !$date ? TIME : strtotime($date);
 
         $output = '';
-        if ($options['show_title']) {
-            $output .= Functions::calendar_title($date, [
-                'interval'      => 'day'
-            ]);
-        }
-
-        if ($options['show_filters']) {
-            $output .= Functions::calendar_filter([
-                'filter_month'  => FALSE,
-                'filter_year'   => FALSE,
-                'form_hidden'   => ['day'   => isset($_GET['day']) ? $_GET['day'] : '']
-            ]);
-        }
+        if ($options['show_title'])     $output .= Functions::calendar_title($date, ['interval' => 'day']);
+        if ($options['show_filters'])   $output .= Functions::calendar_filter(['filter_month' => FALSE, 'filter_year' => FALSE, 'form_hidden' => ['day' => isset($_GET['day']) ? $_GET['day'] : '']]);
 
         $output .= "<table class='table table-bordered table-striped'>\n<thead>\n<tr>\n";
-        $output .= "<th style='width: 75px;' class='text-center'>".$locale['calendar_0265']."</th><th>";
+        $output .= "<th style='width: 75px;' class='text-center'>".$locale['calendar_0265']."</th>\n<th>\n";
         if (!empty($events)) {
             foreach($events as $key => $event) {
                 if (showdate("%Y-%m-%d", $date) >= showdate("%Y-%m-%d", $event['event_start']) && showdate("%Y-%m-%d", $date) <= showdate("%Y-%m-%d", $event['event_end']) && $event['event_allday']) {              
-                    $output .= "<div class='pull-left m-r-30'>";
+                    $output .= "<div class='pull-left m-r-30'>\n";
                     $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='calendar-link-item'>".$event['event_title']."</a>\n";
                     $output .= "<div class='small'>".Functions::cdatetime($event, ['show_location' => TRUE, 'show_allday' => FALSE])."</div>\n";
                     $output .= "</div>\n";  
                 }
             }
         }       
-        $output .= "</th>";
-        $output .= "</tr>\n</thead>\n<tbody>\n";
+        $output .= "</th>\n</tr>\n</thead>\n<tbody>\n";
 
         for ($i = 0; $i < 24; $i++) {
             $time = Functions::cdateoffset(mktime($i, 0, 0, date("n", $date), date("j", $date), date("Y", $date)), FALSE);
@@ -474,7 +431,7 @@ if (!function_exists('main_calendar_day')) {
                     $event['event_start2'] = mktime(date("H", $event['event_start']), 0, 0, date("n", $event['event_start']), date("j", $event['event_start']), date("Y", $event['event_start']));
                     if ($time >= $event['event_start2'] && $time <= $event['event_end'] && !$event['event_allday']) {
                         if (date("G", $time) >= date("G", $event['event_start2']) && date("G", $time) <= date("G", $event['event_end'])) {
-                            $output .= "<div class='pull-left m-r-30'>";
+                            $output .= "<div class='pull-left m-r-30'>\n";
                             $output .= "<a href='".clean_request("view=list&event_id=".$event['event_id'], ['cat_id'])."' class='calendar-link-item'>".$event['event_title']."</a>\n";
                             $output .= "<div class='small'>".Functions::cdatetime($event, ['show_location' => TRUE, 'show_allday' => FALSE, 'show_time_only' => TRUE])."</div>\n";
                             $output .= "</div>\n";
@@ -484,7 +441,6 @@ if (!function_exists('main_calendar_day')) {
             }
             $output .= "</td>\n</tr>\n";
         }
-
         $output .= "</tbody>\n</table>\n";
 
         return $output;
@@ -538,7 +494,7 @@ if (!function_exists('display_calendar_menu')) {
 
         ob_start();
         openside();
-        echo "<div class='pull-right'><a class='text-muted' title='".$locale['calendar_0366']."' href='".CALENDAR."ical.php'><i class='fas fa-calendar-plus'></i></a></div>";
+        echo "<div class='pull-right'>\n<a class='text-muted' title='".$locale['calendar_0366']."' href='".CALENDAR."ical.php'><i class='fas fa-calendar-plus'></i></a>\n</div>\n";
         echo "<ul class='block calendar-filter'>\n";
         foreach ($menu as $key => $link) {
             echo "<li class='".(isset($_GET[$key]) || (isset($_GET['view']) && $_GET['view'] == $key) ? "active strong" : "")."'>";
@@ -574,13 +530,13 @@ if (!function_exists('events_list')) {
         echo "<ul class='block event-items'>\n";
         if (!empty($items['calendar_items'])) {
             foreach ($items['calendar_items'] as $key => $item) {
-                echo "<li>";
-                echo "<a title='".$locale['calendar_1001']."' href='".CALENDAR."calendar.php?view=list&event_id=".$item['event_id']."'>".$item['event_title']."</a>";
-                echo "<div class='event-date'>".Functions::cdatetime($item, ['show_location' => TRUE])."</div>";
+                echo "<li>\n";
+                echo "<a title='".$locale['calendar_1001']."' href='".CALENDAR."calendar.php?view=list&event_id=".$item['event_id']."'>".$item['event_title']."</a>\n";
+                echo "<div class='event-date'>".Functions::cdatetime($item, ['show_location' => TRUE])."</div>\n";
                 echo "</li>\n";
             }
         } else {
-            echo "<div>".fusion_get_locale('calendar_0333')."</div>";
+            echo "<div>".fusion_get_locale('calendar_0333')."</div>\n";
         }
         echo "</ul>\n";
 
@@ -631,7 +587,6 @@ if (!function_exists('showparticipationform')) {
 
            // Handle
            if (\defender::safe()) {
-
                 // Update
                 if (dbcount("(participant_id)", DB_CALENDAR_PARTICIPATION, "participant_id='".$participant_data['participant_id']."' AND event_id='".$participant_data['event_id']."'")) {
                     dbquery_insert(DB_CALENDAR_PARTICIPATION, $participant_data, 'update');
@@ -642,7 +597,6 @@ if (!function_exists('showparticipationform')) {
                     $participant_data['participant_id'] = dbquery_insert(DB_CALENDAR_PARTICIPATION, $participant_data, 'save');
                     addNotice('success', $locale['calendar_0328']);
                 }
-
                 redirect(clean_request('view=list', ['event_id']), FALSE);
             }
         }
@@ -671,7 +625,7 @@ if (!function_exists('showparticipationform')) {
 
             $html = "<a class='btn ".$status_class[$participant_data['participant_status']][0]."'  href='#participate' id='event_participation-".$participant_data['event_id']."'>";
             $html .= "<i class='".$status_class[$participant_data['participant_status']][1]."'></i>".sprintf($locale['calendar_0322'], implode("/", $count_participations));
-            $html .= "</a>";
+            $html .= "</a>\n";
 
             $modal = openmodal('event_participation-'.$participant_data['event_id'], sprintf($locale['calendar_0323'], $info['event_title']), ['button_id' => 'event_participation-'.$participant_data['event_id']]);
             
@@ -701,7 +655,7 @@ if (!function_exists('showparticipationform')) {
             if (dbrows($p2_result) > 0) {
                 while ($participant = dbarray($p2_result)) {
 
-                    $modal .= "<tr><td class='col-xs-1'>".display_avatar($participant, '35px', '', TRUE, 'img-rounded')."</td>\n";
+                    $modal .= "<tr>\n<td class='col-xs-1'>".display_avatar($participant, '35px', '', TRUE, 'img-rounded')."</td>\n";
                     $modal .= "<td class='col-xs-2'>\n";
                     $modal .= "<span class='side'>".profile_link($participant['user_id'], $participant['user_name'], $participant['user_status'])."</span>\n";
                     $modal .= "<div class='small'>".timer($participant['participant_datestamp'])."</div>\n";
@@ -713,7 +667,7 @@ if (!function_exists('showparticipationform')) {
                 $modal .= "<td colspan='5' class='col-xs-3 text-center'>".$locale['calendar_0340']."</td>\n";
             }
 
-            $modal .= "</table>\n</div>";
+            $modal .= "</table>\n</div>\n";
             $modal .= closetabbody();
 
             $modal .= opentabbody($tab_title['title'][1], $tab_title['id'][1], $tab_active);
