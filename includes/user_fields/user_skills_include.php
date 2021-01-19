@@ -27,7 +27,7 @@ switch($profile_method) {
     case 'display':      
         $tags = $field_value ? explode(',', $field_value) : []; 
 
-        $field_value = array_map(function ($n) use ($bg_colors) {
+        $field_value = array_map(function ($n) {
             return sprintf("<span class='badge strong m-5' style='font-size:1em;'>%s</span>", $n);
         }, $tags);
 
